@@ -1,0 +1,3 @@
+## Monday & NextJS
+
+Unlock the full potential of Monday.com by integrating it with Next.js to build custom applications tailored to your business needs. Whether you're automating workflows, visualising data, or enhancing team collaboration, this guide takes you step-by-step through the development process—without showing a single line of code. Perfect for developers who want to extend Monday.com’s capabilities using modern web technologies.
