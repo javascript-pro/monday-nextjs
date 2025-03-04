@@ -115,11 +115,20 @@ export default function Home() {
             <div className={styles.itemsGrid}>
               {board.items_page.items.map((item) => {
                 const statusColumn = item.column_values.find((col) => col.id === "status");
-                const currentStatus = statusColumn?.text || "To Do";
+                const currentStatus = statusColumn?.text || "To Do"; // Now used below
 
                 return (
                   <div key={item.id} className={styles.itemCard}>
                     <h3 className={styles.itemTitle}>{item.name}</h3>
+
+                    <p className={styles.status}>Status: {currentStatus}</p> {/* Now displayed */}
+
+                    <button
+                      className={styles.statusButton}
+                      onClick={() => handleStatusChange(item.id, "In Progress")}
+                    >
+                      Mark as In Progress
+                    </button>
 
                     <div className={styles.itemContent}>
                       {item.column_values.map((col) => {
@@ -146,8 +155,6 @@ export default function Home() {
                           </div>
                         );
                       })}
-
-                      
                     </div>
                   </div>
                 );
@@ -171,7 +178,6 @@ export default function Home() {
 
       {/* Footer */}
       <footer className={styles.footer}>
-        
       </footer>
     </div>
   );
