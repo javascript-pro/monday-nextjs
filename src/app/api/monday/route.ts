@@ -1,23 +1,31 @@
 // app/api/monday/route.ts
 import { NextResponse } from 'next/server';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+
+interface ColumnValue {
+    id: string;
+    title: string;
+    text: string;
+}
+
+interface Item {
+    id: string;
+    name: string;
+    column_values: ColumnValue[];
+}
+
+interface Board {
+    id: string;
+    name: string;
+    items: Item[];
+}
+
+interface MondayData {
+    boards: Board[];
+}
 
 interface MondayResponse {
-    data: {
-        boards: Array<{
-            id: string;
-            name: string;
-            items: Array<{
-                id: string;
-                name: string;
-                column_values: Array<{
-                    id: string;
-                    title: string;
-                    text: string;
-                }>;
-            }>;
-        }>;
-    };
+    data: MondayData;
 }
 
 export async function GET(): Promise<NextResponse> {
@@ -32,29 +40,34 @@ export async function GET(): Promise<NextResponse> {
     };
 
     try {
-        const query = `query {
-            boards {
-                id
-                name
-                items {
+        const query = JSON.stringify({
+            query: `query {
+                boards {
                     id
                     name
-                    column_values {
+                    items {
                         id
-                        title
-                        text
+                        name
+                        column_values {
+                            id
+                            title
+                            text
+                        }
                     }
                 }
-            }
-        }`;
+            }`
+        });
         
-        const response = await axios.post<MondayResponse>(
+        const response: AxiosResponse<MondayResponse> = await axios.post(
             'https://api.monday.com/v2',
-            { query },
+            query,
             { headers }
         );
-        return NextResponse.json(response.data, { status: 200 });
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json(response.data.data, { status: 200 });
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return NextResponse.json({ error: error.response.data }, { status: error.response.status });
+        }
+        return NextResponse.json({ error: 'Unknown error occurred' }, { status: 500 });
     }
 }
