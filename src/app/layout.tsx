@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 
 
 export const metadata: Metadata = {
-  title: "Monday & NextJS",
-  description: "Leverage the power of Next.js and Monday.com to create custom business apps that streamline workflows and boost productivity",
+  title: "Monday & NextJS POC",
+  description: "POC to show a NextJS React frontend deployed to vercel connecting to Monday.com API via the Next API layer",
 };
 
 export default function RootLayout({
