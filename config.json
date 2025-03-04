@@ -1,7 +1,7 @@
 {
     "title": "Monday NextJS",
     "url": "https://monday.goldlabel.pro",
-    "description": "",
+    "description": "POC to show a NextJS React frontend deployed to vercel connecting to Monday.com API via the Next API layer",
     "favicon": "/svg/favicon.svg",
     "ogImage": "/jpg/og.jpg",
     "themeColor": "#219B02",

@@ -1,0 +1,9 @@
+Task Name,Status,Assigned To,Notes
+Set Up Monday.com API Connection,To Do,Dev Team,Create API key and test API authentication
+Fetch Compliance Data from Monday.com,To Do,Dev Team,Retrieve and display board data using API
+Create a New Regulatory Task in Monday.com,To Do,Dev Team,Add a mutation to create tasks in Monday.com
+Update a Compliance Status,To Do,Dev Team,Implement task status update via API
+Delete a Regulatory Task,To Do,Dev Team,Add delete functionality via API
+Sync Monday.com Tasks with Next.js UI,To Do,Dev Team,Display tasks in Next.js UI in real-time
+Test CRUD Operations on Monday.com,To Do,QA Team,"Validate API requests for task creation, update, and deletion"
+Invite Client to View Board,To Do,Admin,Ensure client has appropriate access
