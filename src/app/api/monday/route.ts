@@ -4,8 +4,8 @@ import axios, { AxiosResponse } from 'axios';
 
 interface ColumnValue {
     id: string;
-    title: string;
     text: string;
+    value: string; // JSON-encoded column data
 }
 
 interface Item {
@@ -29,7 +29,10 @@ interface MondayResponse {
 }
 
 export async function GET(): Promise<NextResponse> {
+
+    const MONDAY_BOARD_ID = "8614115261";
     const { MONDAY_API_TOKEN } = process.env;
+
     if (!MONDAY_API_TOKEN) {
         return NextResponse.json({ error: 'Missing Monday API Token' }, { status: 500 });
     }
@@ -42,27 +45,30 @@ export async function GET(): Promise<NextResponse> {
     try {
         const query = JSON.stringify({
             query: `query {
-                boards {
+                boards(ids: ${MONDAY_BOARD_ID}) {
                     id
                     name
-                    items {
-                        id
-                        name
-                        column_values {
+                    items_page {
+                        items {
                             id
-                            title
-                            text
+                            name
+                            column_values {
+                                id
+                                text
+                                value
+                            }
                         }
                     }
                 }
             }`
         });
-        
+
         const response: AxiosResponse<MondayResponse> = await axios.post(
             'https://api.monday.com/v2',
             query,
             { headers }
         );
+
         return NextResponse.json(response.data.data, { status: 200 });
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
