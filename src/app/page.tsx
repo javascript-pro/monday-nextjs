@@ -53,7 +53,7 @@ export default function Home() {
 
   const handleStatusChange = async (itemId: string, newStatus: string) => {
     try {
-      setSuccessMessage(null); // Clear previous success message
+      setSuccessMessage(null);
       const response = await fetch("/api/update-status", {
         method: "POST",
         headers: {
@@ -68,7 +68,7 @@ export default function Home() {
 
       const updatedBoard = await response.json();
       setBoard(updatedBoard.boards?.[0] || null);
-      setSuccessMessage("Status updated successfully! ✅");
+      setSuccessMessage("✅ Status updated successfully!");
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
@@ -79,36 +79,43 @@ export default function Home() {
   };
 
   return (
-    <div className={styles.page}>
+    <div className={styles.container}>
       <main className={styles.main}>
-        <section className={styles.boardInfo}>
-          {/* Button to open Monday board */}
+        {/* Header Section */}
+        <header className={styles.header}>
+          <h1>Monday.com POC</h1>
           <button
             className={styles.boardButton}
             onClick={() => window.open("https://goldlabel-apps.monday.com/boards/8614115261", "_blank")}
           >
-            Open NextJS POC in Monday.com
+            Open Monday.com Board
           </button>
+        </header>
 
+        {/* Login Info */}
+        <section className={styles.authInfo}>
           <p>
-            To view the board, you will need to log out of Monday.com first and then log in with the credentials below:
+            To access the board, log out of Monday.com first and then log in with the credentials below:
           </p>
-          <p><strong>Email:</strong> demo@goldlabel.pro</p>
-          <p><strong>Password:</strong> demo2025</p>
+          <div className={styles.credentials}>
+            <p><strong>Email:</strong> demo@goldlabel.pro</p>
+            <p><strong>Password:</strong> demo2025</p>
+          </div>
         </section>
 
-        <section className={styles.items}>
-          <h2>{board ? board.name : "Loading Monday Board..."}</h2>
+        {/* Board Data */}
+        <section className={styles.boardContainer}>
+          <h2>{board ? "" : "Loading Monday Board..."}</h2>
 
-          {loading && <p>Loading...</p>}
-          {error && <p className={styles.error}>Error: {error}</p>}
+          {loading && <p className={styles.loading}>Loading...</p>}
+          {error && <p className={styles.error}>{error}</p>}
           {successMessage && <p className={styles.success}>{successMessage}</p>}
 
           {board && (
-            <div className={styles.itemList}>
+            <div className={styles.itemsGrid}>
               {board.items_page.items.map((item) => {
                 const statusColumn = item.column_values.find((col) => col.id === "status");
-                const currentStatus = statusColumn?.text || "To Do"; // Default to 'To Do' if not found
+                const currentStatus = statusColumn?.text || "To Do";
 
                 return (
                   <div key={item.id} className={styles.itemCard}>
@@ -140,22 +147,7 @@ export default function Home() {
                         );
                       })}
 
-                      {/* Status Dropdown */}
-                      <div className={styles.statusSection}>
-                        <label htmlFor={`status-${item.id}`} className={styles.statusLabel}>
-                          Status:
-                        </label>
-                        <select
-                          id={`status-${item.id}`}
-                          className={styles.statusDropdown}
-                          value={currentStatus}
-                          onChange={(e) => handleStatusChange(item.id, e.target.value)}
-                        >
-                          <option value="To Do">To Do</option>
-                          <option value="In Progress">In Progress</option>
-                          <option value="Done">Done</option>
-                        </select>
-                      </div>
+                      
                     </div>
                   </div>
                 );
@@ -164,6 +156,7 @@ export default function Home() {
           )}
         </section>
 
+        {/* Call to Action */}
         <div className={styles.ctas}>
           <a
             className={styles.primary}
@@ -171,13 +164,14 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            GitHub
+            Code on GitHub
           </a>
         </div>
       </main>
 
+      {/* Footer */}
       <footer className={styles.footer}>
-        <p>by Goldlabel</p>
+        
       </footer>
     </div>
   );
